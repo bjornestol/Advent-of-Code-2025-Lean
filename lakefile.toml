@@ -3,9 +3,10 @@ version = "0.1.0"
 defaultTargets = ["aoc2025"]
 
 [[require]]
-name = "mathlib"
-git = "https://github.com/leanprover-community/mathlib4"
-rev = "v4.25.2"
+name = "Regex"
+git = "https://github.com/pandaman64/lean-regex"
+rev = "v4.26.0"
+subDir = "regex"
 
 [[lean_lib]]
 name = "Aoc2025"

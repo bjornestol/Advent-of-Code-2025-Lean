@@ -3,7 +3,7 @@ structure ParseError where
 deriving Repr
 
 def ParseError.getMessage (pErr : ParseError) : String :=
-  s!"ParseError on line {pErr.message}"
+  s!"ParseError: {pErr.message}"
 
 def Option.toExcept (val? : Option α) (e : ParseError) : Except ParseError α :=
   match val? with
@@ -13,6 +13,9 @@ def Option.toExcept (val? : Option α) (e : ParseError) : Except ParseError α :
 def String.splitLines (s : String) : List String :=
   s.splitOn "\n" |>.filter (· ≠ "")
 
+def String.pad (n : Nat) (s : String) : String :=
+  let spaces := String.ofList (List.replicate (n - s.length) ' ')
+  spaces ++ s
 
 structure Day where
   i : Nat 
@@ -52,15 +55,21 @@ def getReal (day : Day) : IO String := do
   IO.FS.readFile file
 
 def Day.runReal (day : Day) : IO Unit := do
+  let padding := 15
   let sout ← IO.getStdout
   let realData ← getReal day
+  let tic₁ ← IO.monoMsNow
   let day1Result := match (day.problem1 realData) with
   | .ok result => result
   | .error pError => pError.getMessage
+  let toc₁ ← IO.monoMsNow
+  sout.putStrLn s!"Day {(toString day.i).pad 2} Problem 1: {day1Result.pad padding} in {(toString (toc₁ - tic₁)).pad 4}ms"
+  let tic₂ ← IO.monoMsNow
   let day2Result := match (day.problem2 realData) with
   | .ok result => result
   | .error pError => pError.getMessage
-  sout.putStrLn s!"Day {day.i} real - Problem 1: {day1Result} Problem 2: {day2Result}"
+  let toc₂ ← IO.monoMsNow
+  sout.putStrLn s!"Day {(toString day.i).pad 2} Problem 2: {day2Result.pad padding} in {(toString (toc₂ - tic₂)).pad 4}ms"
 
 def Day.run (day : Day) : IO Unit := do
   day.runTest

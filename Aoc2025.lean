@@ -2,3 +2,10 @@ import Aoc2025.Basic
 import Aoc2025.Day1
 import Aoc2025.Day2
 import Aoc2025.Day3
+import Aoc2025.Day4
+import Aoc2025.Day5
+import Aoc2025.Day6
+import Aoc2025.Day7
+import Aoc2025.Day8
+import Aoc2025.Day9
+import Aoc2025.Day10
